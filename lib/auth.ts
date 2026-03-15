@@ -10,7 +10,15 @@ export async function requireSession() {
 
 export async function requireRole(role: "partner" | "admin") {
   const { supabase, user } = await requireSession();
-  const { data: profile } = await supabase.from("profiles").select("role, partner_id, display_name").eq("id", user.id).single();
-  if (!profile || profile.role !== role) redirect(role === "admin" ? "/partner" : "/admin");
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role, partner_id, display_name")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile || profile.role !== role) {
+    redirect(role === "admin" ? "/partner" : "/admin");
+  }
+
   return { supabase, user, profile };
 }

@@ -15,7 +15,10 @@ export async function GET() {
 
   const headers = ["full_name", "email", "company", "phone", "status", "notes", "scanned_at", "source"];
   const escapeValue = (value: unknown) => `"${String(value ?? "").replaceAll('"', '""')}"`;
-  const csv = [headers.join(","), ...(leads ?? []).map((row) => headers.map((key) => escapeValue((row as Record<string, unknown>)[key])).join(","))].join("\n");
+  const csv = [
+    headers.join(","),
+    ...(leads ?? []).map((row) => headers.map((key) => escapeValue((row as Record<string, unknown>)[key])).join(",")),
+  ].join("\n");
 
   return new NextResponse(csv, {
     status: 200,

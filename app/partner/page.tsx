@@ -1,5 +1,6 @@
 import { requireRole } from "@/lib/auth";
 import { LeadEditor } from "@/components/LeadEditor";
+import { ScannerPanel } from "@/components/ScannerPanel";
 import { SignOutButton } from "@/components/SignOutButton";
 import type { Lead } from "@/lib/types";
 
@@ -23,13 +24,17 @@ export default async function PartnerPage() {
           </div>
         </div>
       </section>
+
       <section className="stats-3">
         <div className="card"><div className="label">Totaal leads</div><div className="stat-value">{leadRows.length}</div></div>
         <div className="card"><div className="label">Laatste scan</div><div className="stat-value" style={{ fontSize: 18 }}>{leadRows[0]?.scanned_at ? new Date(leadRows[0].scanned_at).toLocaleString("nl-NL") : "Nog geen scans"}</div></div>
         <div className="card"><div className="label">Privacy</div><div className="stat-value" style={{ fontSize: 18 }}>Alleen eigen partnerdata</div></div>
       </section>
+
+      <ScannerPanel partnerId={profile.partner_id} />
+
       <section className="grid">
-        {leadRows.length === 0 ? <div className="card">Nog geen leads. Volgende stap: QR scanner koppelen aan insert-flow.</div> : leadRows.map((lead) => <LeadEditor key={lead.id} lead={lead} />)}
+        {leadRows.length === 0 ? <div className="card">Nog geen leads opgeslagen.</div> : leadRows.map((lead) => <LeadEditor key={lead.id} lead={lead} />)}
       </section>
     </div>
   );

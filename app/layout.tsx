@@ -1,7 +1,10 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 
-export const metadata = { title: "PBIG Partner Lead Scanner", description: "Partner scanner voor PBIG events" };
+export const metadata = {
+  title: "PBIG Partner Lead Scanner",
+  description: "Partner scanner voor PBIG events",
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

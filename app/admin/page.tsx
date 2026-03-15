@@ -20,13 +20,18 @@ export default async function AdminPage() {
           <SignOutButton />
         </div>
       </section>
+
       <section className="stats-3">
         <div className="card"><div className="label">Partners</div><div className="stat-value">{stats.length}</div></div>
         <div className="card"><div className="label">Totaal scans</div><div className="stat-value">{stats.reduce((sum, item) => sum + Number(item.lead_count), 0)}</div></div>
         <div className="card"><div className="label">Leadgegevens</div><div className="stat-value" style={{ fontSize: 18 }}>Verborgen</div></div>
       </section>
+
       <section className="grid grid-2">
-        <div className="card"><h2>Partner toevoegen</h2><PartnerCreateForm /></div>
+        <div className="card">
+          <h2>Partner toevoegen</h2>
+          <PartnerCreateForm />
+        </div>
         <div className="card">
           <h2>Scans per partner</h2>
           <div className="grid">
