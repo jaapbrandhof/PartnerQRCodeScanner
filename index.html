@@ -3,274 +3,61 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>PBIG Lead Scanner</title>
+  <title>PBIG Partner Lead Scanner</title>
   <style>
-    :root{
-      --bg1:#061322;--bg2:#0a1d31;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);
-      --text:#fff;--muted:#b7c3d1;--accent:#46d7f4;--accent2:#9be9f8;--danger:#ffb4b4;
-    }
-    *{box-sizing:border-box} html,body{margin:0;padding:0}
-    body{
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);
-      background:radial-gradient(circle at top right, rgba(70,215,244,.18), transparent 28%), linear-gradient(180deg,var(--bg1),var(--bg2));
-      min-height:100vh;
-    }
-    .wrap{max-width:1100px;margin:0 auto;padding:16px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;backdrop-filter: blur(10px);margin-bottom:16px}
-    h1,h2,h3,p{margin:0} h1{font-size:28px;line-height:1.1;margin-bottom:8px} h2{font-size:18px;margin-bottom:8px}
-    .muted{color:var(--muted)} .small{font-size:12px;color:var(--muted)}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center} .between{justify-content:space-between}
+    :root{--bg1:#061322;--bg2:#0a1d31;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--text:#fff;--muted:#b7c3d1;--accent:#46d7f4;--accent2:#9be9f8;--ok:#b8ffd8}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:radial-gradient(circle at top right, rgba(70,215,244,.18), transparent 28%),linear-gradient(180deg,var(--bg1),var(--bg2));min-height:100vh}
+    .wrap{max-width:1080px;margin:0 auto;padding:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;backdrop-filter:blur(10px);margin-bottom:16px}
+    h1,h2,p{margin:0}h1{font-size:30px;line-height:1.1;margin-bottom:8px}h2{font-size:20px;margin-bottom:8px}.muted{color:var(--muted)}
+    .row,.between,.tabs{display:flex;gap:10px;flex-wrap:wrap}.between{justify-content:space-between;align-items:center}
     .btn{appearance:none;border:none;border-radius:16px;padding:12px 16px;font-weight:700;cursor:pointer;background:var(--accent);color:#042030}
-    .btn.secondary{background:rgba(255,255,255,.08);color:#fff;border:1px solid var(--line)} .btn.danger{background:#fd8f8f;color:#280000}
+    .btn.secondary{background:rgba(255,255,255,.08);color:#fff;border:1px solid var(--line)} .btn:disabled{opacity:.5}
     input,textarea,select{width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:#fff}
-    textarea{min-height:120px} label{display:block;font-size:14px;margin-bottom:6px;color:var(--muted)}
+    textarea{min-height:110px} label{display:block;font-size:14px;margin-bottom:6px;color:var(--muted)}
     .video{width:100%;aspect-ratio:4/3;background:#02111d;border-radius:18px;border:1px solid var(--line);object-fit:cover}
-    .msg{margin-top:10px;padding:12px 14px;border-radius:14px;background:rgba(70,215,244,.12);border:1px solid rgba(70,215,244,.25)}
-    .msg.error{background:rgba(255,120,120,.12);border-color:rgba(255,120,120,.25);color:#ffd3d3}
-    .grid{display:grid;gap:12px} .list{display:grid;gap:10px}
-    .lead{border:1px solid var(--line);background:rgba(0,0,0,.18);border-radius:16px;padding:12px}
-    .lead.active{border-color:rgba(70,215,244,.6);background:rgba(70,215,244,.1)}
-    .meta{font-size:13px;color:var(--muted);margin-top:6px} .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);font-size:12px}
-    .hidden{display:none!important} .tabs{display:flex;gap:8px;flex-wrap:wrap}.tabs button{flex:1;min-width:120px}
-    @media (min-width:760px){ .grid.two{grid-template-columns:1fr 1fr} .grid.partner{grid-template-columns:0.95fr 1.05fr} }
+    .msg{margin-top:10px;padding:12px 14px;border-radius:14px;background:rgba(70,215,244,.12);border:1px solid rgba(70,215,244,.25)} .msg.error{background:rgba(255,120,120,.12);border-color:rgba(255,120,120,.25);color:#ffd3d3}.msg.ok{background:rgba(120,255,180,.12);border-color:rgba(120,255,180,.25);color:var(--ok)}
+    .list,.grid,.stats{display:grid;gap:12px}.lead,.partner,.stat{border:1px solid var(--line);background:rgba(0,0,0,.18);border-radius:16px;padding:12px}.meta,.small{font-size:13px;color:var(--muted);margin-top:6px}.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);font-size:12px}.hidden{display:none!important}
+    .tab{padding:10px 14px;border-radius:14px;border:1px solid var(--line);cursor:pointer;background:rgba(255,255,255,.05);color:#fff}.tab.active{background:rgba(70,215,244,.18);border-color:rgba(70,215,244,.35)}
+    .value{font-size:24px;font-weight:800;margin-top:6px}
+    @media (min-width:760px){.grid.two{grid-template-columns:1fr 1fr}.stats.three{grid-template-columns:1fr 1fr 1fr}}
     a{color:var(--accent2)} code{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:8px}
   </style>
 </head>
-<body>
-  <div class="wrap">
-    <section id="loginView" class="grid two">
-      <div class="card">
-        <div class="pill">PBIG 2027 partner tool</div>
-        <h1>Badge scannen, lead opslaan en direct exporteren</h1>
-        <p class="muted">Statische HTTPS-testversie voor mobiel. Data blijft lokaal in deze browser opgeslagen.</p>
-        <div class="grid two" style="margin-top:16px">
-          <div class="card"><h3>QR-scannen</h3><p class="small">Direct vanuit de browsercamera</p></div>
-          <div class="card"><h3>Dataseparatie</h3><p class="small">Per partneraccount afgeschermd</p></div>
-          <div class="card"><h3>Export</h3><p class="small">CSV, JSON en Excel-compatibel</p></div>
-          <div class="card"><h3>Admin</h3><p class="small">Alleen aantallen per partner</p></div>
-        </div>
-      </div>
-      <div class="card">
-        <h2>Inloggen</h2>
-        <div style="margin-top:12px">
-          <label for="email">E-mailadres</label>
-          <input id="email" value="partner@plainwater.nl" />
-        </div>
-        <div style="margin-top:12px">
-          <label for="password">Wachtwoord</label>
-          <input id="password" type="password" value="demo123" />
-        </div>
-        <div id="loginMsg" class="msg error hidden"></div>
-        <div class="row" style="margin-top:14px"><button id="loginBtn" class="btn">Inloggen</button></div>
-        <div class="card" style="margin-top:16px">
-          <div class="small">Demo partner: <strong>partner@plainwater.nl / demo123</strong></div>
-          <div class="small" style="margin-top:6px">Demo admin: <strong>admin@pbig.nl / admin123</strong></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="partnerView" class="hidden">
-      <div class="card row between">
-        <div>
-          <div class="pill">Partneromgeving</div>
-          <h2 id="partnerName" style="margin-top:8px"></h2>
-          <p class="muted">Geschikt voor gelijktijdig gebruik op meerdere devices zodra er een backend is gekoppeld.</p>
-        </div>
-        <div class="row">
-          <button id="csvBtn" class="btn secondary">CSV</button>
-          <button id="xlsBtn" class="btn secondary">Excel</button>
-          <button id="jsonBtn" class="btn secondary">JSON</button>
-          <button id="logoutBtn1" class="btn secondary">Uitloggen</button>
-        </div>
-      </div>
-      <div class="tabs" style="margin-bottom:16px">
-        <button class="btn secondary tabBtn" data-tab="scannerTab">Scanner</button>
-        <button class="btn secondary tabBtn" data-tab="leadsTab">Leads</button>
-        <button class="btn secondary tabBtn" data-tab="accountTab">Account</button>
-      </div>
-
-      <div id="scannerTab">
-        <div class="grid two">
-          <div class="card">
-            <h2>QR-scanner</h2>
-            <video id="video" class="video" playsinline muted autoplay></video>
-            <div class="row" style="margin-top:12px">
-              <button id="startBtn" class="btn">Camera starten</button>
-              <button id="stopBtn" class="btn secondary">Camera stoppen</button>
-              <button id="demoBtn" class="btn secondary">Demo-vCard opslaan</button>
-            </div>
-            <div id="scanMsg" class="msg hidden"></div>
-            <div class="small" style="margin-top:10px">Diagnostiek:<div id="diag"></div></div>
-          </div>
-          <div class="card">
-            <h2>Fallback / demo vCard</h2>
-            <label for="vcard">Handig voor testen</label>
-            <textarea id="vcard">BEGIN:VCARD
-FN:Jaap van den Brandhof
-EMAIL:jaap@kimura.nl
-ORG:Kimura
-TEL:+31612345678
-END:VCARD</textarea>
-          </div>
-        </div>
-      </div>
-
-      <div id="leadsTab" class="hidden">
-        <div class="grid partner">
-          <div class="card">
-            <div class="row between"><h2>Leadlijst</h2><input id="search" placeholder="Zoeken..." style="max-width:240px" /></div>
-            <div id="leadsList" class="list" style="margin-top:14px"></div>
-          </div>
-          <div class="card">
-            <h2>Leaddetails</h2>
-            <div id="leadDetailEmpty" class="muted" style="margin-top:12px">Selecteer eerst een lead.</div>
-            <div id="leadDetail" class="hidden">
-              <div class="grid two" style="margin-top:12px">
-                <div><label>Naam</label><input id="d_name" /></div>
-                <div><label>E-mail</label><input id="d_email" /></div>
-                <div><label>Bedrijf</label><input id="d_company" /></div>
-                <div><label>Telefoonnummer</label><input id="d_phone" /></div>
-              </div>
-              <div style="margin-top:12px"><label>Leadstatus</label><select id="d_status"></select></div>
-              <div style="margin-top:12px"><label>Notitie</label><textarea id="d_notes"></textarea></div>
-              <div class="grid two" style="margin-top:12px">
-                <div class="card"><div class="small">Bron</div><div id="d_source"></div></div>
-                <div class="card"><div class="small">Scanmoment</div><div id="d_scannedAt"></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="accountTab" class="hidden">
-        <div class="card">
-          <h2>MVP-notes</h2>
-          <p class="muted">Deze deploybare versie is statisch en gebruikt localStorage. Voor productie wil je auth, centrale opslag en strikte afscherming via backend policies.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="adminView" class="hidden">
-      <div class="card row between">
-        <div>
-          <div class="pill">Beheer</div>
-          <h2 style="margin-top:8px">PBIG partner-overzicht</h2>
-          <p class="muted">Alleen aantallen zichtbaar. Leads blijven verborgen.</p>
-        </div>
-        <button id="logoutBtn2" class="btn secondary">Uitloggen</button>
-      </div>
-      <div id="adminStats"></div>
-    </section>
-  </div>
-
+<body><div class="wrap"><div id="app"></div></div>
 <script>
-const STORAGE_KEY='pbig-deployable-app-v1';
-const defaultState={
-  accounts:[
-    {id:'partner-plainwater',email:'partner@plainwater.nl',password:'demo123',role:'partner',partnerName:'Plainwater'},
-    {id:'partner-insumma',email:'partner@insumma.nl',password:'demo123',role:'partner',partnerName:'InSumma & Webdashboard'},
-    {id:'admin-pbig',email:'admin@pbig.nl',password:'admin123',role:'admin',partnerName:'PBIG'}
-  ],
-  leads:{
-    'partner-plainwater':[
-      {id:'lead-1',fullName:'Sanne de Wit',email:'sanne@contoso.nl',company:'Contoso',phone:'+31 6 12345678',status:'Nieuw',notes:'Interesse in Fabric governance.',scannedAt:'2026-03-07T10:12:00',source:'QR vCard'}
-    ],
-    'partner-insumma':[]
-  }
-};
-const statuses=['Nieuw','Opvolgen','Contact gehad','Gekwalificeerd','Niet relevant'];
-let state=loadState(); let session=null; let currentLeadId=null; let stream=null; let timer=null; let detector=null;
-const $=id=>document.getElementById(id);
-statuses.forEach(s=>{ const o=document.createElement('option'); o.value=s; o.textContent=s; $('d_status').appendChild(o); });
-
-function loadState(){ try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||JSON.stringify(defaultState));}catch{return structuredClone(defaultState);} }
-function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-function currentAccount(){ return session ? state.accounts.find(a=>a.id===session.accountId) : null; }
-function currentLeads(){ const a=currentAccount(); return a && a.role==='partner' ? (state.leads[a.id]||[]) : []; }
-function show(id){ $(id).classList.remove('hidden'); } function hide(id){ $(id).classList.add('hidden'); }
-function showMsg(el, text, err=false){ el.textContent=text; el.className=err?'msg error':'msg'; }
-function clearMsg(el){ el.textContent=''; el.className='msg hidden'; }
-function fmt(dt){ return dt ? new Date(dt).toLocaleString('nl-NL') : '-'; }
-function esc(s){ return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-function render(){
-  hide('loginView'); hide('partnerView'); hide('adminView');
-  if(!session){ show('loginView'); return; }
-  const acc=currentAccount(); if(!acc){ session=null; show('loginView'); return; }
-  if(acc.role==='admin') renderAdmin(); else renderPartner();
-}
-function renderAdmin(){
-  show('adminView');
-  const partners=state.accounts.filter(a=>a.role==='partner').map(a=>({name:a.partnerName,email:a.email,count:(state.leads[a.id]||[]).length}));
-  $('adminStats').innerHTML=`<div class="card"><h2>Scans per partner</h2><div class="list" style="margin-top:12px">${partners.map(p=>`<div class="lead"><div class="row between"><div><strong>${esc(p.name)}</strong><div class="meta">${esc(p.email)}</div></div><span class="pill">${p.count} scans</span></div></div>`).join('')}</div></div>`;
-}
-function renderPartner(){
-  show('partnerView'); const acc=currentAccount(); $('partnerName').textContent=acc.partnerName; renderLeads(); updateDiagnostics();
-}
-function renderLeads(){
-  const q=$('search').value.toLowerCase().trim();
-  const leads=currentLeads().filter(l=>!q || [l.fullName,l.email,l.company,l.phone,l.notes,l.status].some(v=>String(v||'').toLowerCase().includes(q)));
-  if(!leads.length){ $('leadsList').innerHTML='<div class="lead"><div class="muted">Nog geen leads gevonden.</div></div>'; renderDetail(null); return; }
-  if(!currentLeadId || !leads.some(l=>l.id===currentLeadId)) currentLeadId=leads[0].id;
-  $('leadsList').innerHTML=leads.map(l=>`<button class="lead ${l.id===currentLeadId?'active':''}" data-id="${l.id}"><div class="row between"><div><strong>${esc(l.fullName)}</strong><div class="meta">${esc(l.company)}</div></div><span class="pill">${esc(l.status)}</span></div><div class="meta">${esc(l.email)} · ${fmt(l.scannedAt)}</div></button>`).join('');
-  $('leadsList').querySelectorAll('button').forEach(b=>b.onclick=()=>{ currentLeadId=b.dataset.id; renderLeads(); });
-  renderDetail(currentLeads().find(l=>l.id===currentLeadId)||null);
-}
-function renderDetail(lead){
-  if(!lead){ show('leadDetailEmpty'); hide('leadDetail'); return; }
-  hide('leadDetailEmpty'); show('leadDetail');
-  $('d_name').value=lead.fullName||''; $('d_email').value=lead.email||''; $('d_company').value=lead.company||''; $('d_phone').value=lead.phone||'';
-  $('d_status').value=lead.status||'Nieuw'; $('d_notes').value=lead.notes||''; $('d_source').textContent=lead.source||''; $('d_scannedAt').textContent=fmt(lead.scannedAt);
-}
-function updateLead(patch){
-  const acc=currentAccount(); if(!acc || !currentLeadId) return;
-  state.leads[acc.id]=(state.leads[acc.id]||[]).map(l=>l.id===currentLeadId?{...l,...patch}:l); saveState(); renderLeads();
-}
-['d_name','d_email','d_company','d_phone','d_notes'].forEach(id=>$(id).addEventListener('input', ()=>updateLead({
-  fullName:$('d_name').value,email:$('d_email').value,company:$('d_company').value,phone:$('d_phone').value,notes:$('d_notes').value
-})));
-$('d_status').addEventListener('change', ()=>updateLead({status:$('d_status').value}));
-$('search').addEventListener('input', renderLeads);
-
-function parseVCard(text){
-  const lines=text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean); const pick=prefixes=>{ const arr=Array.isArray(prefixes)?prefixes:[prefixes]; const line=lines.find(l=>arr.some(p=>l.toUpperCase().startsWith(p.toUpperCase()))); if(!line) return ''; const i=line.indexOf(':'); return i>=0?line.slice(i+1).trim():''; };
-  return { fullName:(pick(['FN:','N:'])||'Onbekende bezoeker').replace(/;/g,' ').replace(/\s+/g,' ').trim(), email:pick(['EMAIL:','EMAIL;TYPE=INTERNET:','EMAIL;TYPE=WORK:']), company:pick('ORG:'), phone:pick(['TEL:','TEL;TYPE=CELL:','TEL;TYPE=WORK:']), status:'Nieuw', notes:'', scannedAt:new Date().toISOString() };
-}
-function addLeadFromText(text, source){
-  if(!text.toUpperCase().includes('BEGIN:VCARD')){ showMsg($('scanMsg'),'Dit lijkt geen vCard te zijn.', true); return; }
-  const acc=currentAccount(); if(!acc) return; const lead=parseVCard(text); lead.id='lead-'+Date.now(); lead.source=source;
-  state.leads[acc.id]=[lead, ...(state.leads[acc.id]||[])]; saveState(); currentLeadId=lead.id; showMsg($('scanMsg'),'Lead opgeslagen: '+lead.fullName); renderLeads();
-}
-function download(name, content, type){ const blob=new Blob([content],{type}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); }
-function exportRows(){ return currentLeads(); }
-function toCsv(rows){ const headers=['fullName','email','company','phone','status','notes','scannedAt','source']; const escCsv=v=>'"'+String(v??'').replace(/"/g,'""')+'"'; return [headers.join(','), ...rows.map(r=>headers.map(h=>escCsv(r[h])).join(','))].join('\n'); }
-
-function updateDiagnostics(){ $('diag').innerHTML=[['Secure context', window.isSecureContext?'ja':'nee'], ['Protocol', location.protocol||'(bestand)'], ['getUserMedia', !!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)], ['BarcodeDetector', 'BarcodeDetector' in window]].map(([k,v])=>`<div>${k}: <strong>${v}</strong></div>`).join(''); }
-async function startCamera(){
-  clearMsg($('scanMsg')); updateDiagnostics();
-  if(!window.isSecureContext){ showMsg($('scanMsg'),'De camera werkt alleen via HTTPS of localhost.', true); return; }
-  if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){ showMsg($('scanMsg'),'Deze browser ondersteunt geen cameratoegang via getUserMedia.', true); return; }
-  try{
-    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false}); $('video').srcObject=stream; await $('video').play();
-    if('BarcodeDetector' in window){
-      detector=new BarcodeDetector({formats:['qr_code']});
-      timer=setInterval(async()=>{ try{ const codes=await detector.detect($('video')); if(codes&&codes.length){ const value=codes[0].rawValue||''; if(value.toUpperCase().includes('BEGIN:VCARD')){ addLeadFromText(value,'Camera QR-scan'); stopCamera(); } else { showMsg($('scanMsg'),'QR gevonden, maar inhoud is geen vCard.', true); } } }catch(e){} }, 700);
-      showMsg($('scanMsg'),'Camera gestart. Richt op de badge-QR.');
-    } else {
-      showMsg($('scanMsg'),'Camera gestart, maar zonder BarcodeDetector wordt de QR niet automatisch gelezen. Gebruik demo-vCard of voeg een QR-library toe voor productie.', true);
-    }
-  }catch(err){ showMsg($('scanMsg'),'Camera kon niet starten: '+(err&&err.message?err.message:'onbekende fout'), true); }
-}
-function stopCamera(){ if(timer){clearInterval(timer); timer=null;} if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; } $('video').srcObject=null; }
-
-$('loginBtn').onclick=()=>{ const acc=state.accounts.find(a=>a.email.toLowerCase()===$('email').value.toLowerCase()&&a.password===$('password').value); if(!acc){ $('loginMsg').textContent='Onjuiste inloggegevens.'; $('loginMsg').classList.remove('hidden'); return; } $('loginMsg').classList.add('hidden'); session={accountId:acc.id,loggedInAt:new Date().toISOString()}; render(); };
-$('logoutBtn1').onclick=$('logoutBtn2').onclick=()=>{ stopCamera(); session=null; render(); };
-$('demoBtn').onclick=()=>addLeadFromText($('vcard').value,'Demo vCard'); $('startBtn').onclick=startCamera; $('stopBtn').onclick=stopCamera;
-$('csvBtn').onclick=()=>download('pbig-leads.csv', toCsv(exportRows()), 'text/csv;charset=utf-8');
-$('xlsBtn').onclick=()=>download('pbig-leads.xls', toCsv(exportRows()), 'application/vnd.ms-excel');
-$('jsonBtn').onclick=()=>download('pbig-leads.json', JSON.stringify(exportRows(), null, 2), 'application/json');
-Array.from(document.querySelectorAll('.tabBtn')).forEach(btn=>btn.onclick=()=>{ ['scannerTab','leadsTab','accountTab'].forEach(id=>hide(id)); show(btn.dataset.tab); });
+const STORAGE_KEY='pbig-deployable-v2';
+const DEMO_STATE={accounts:[{id:'partner-plainwater',email:'partner@plainwater.nl',password:'demo123',role:'partner',partnerName:'Plainwater'},{id:'partner-insumma',email:'partner@insumma.nl',password:'demo123',role:'partner',partnerName:'InSumma & Webdashboard'},{id:'admin-pbig',email:'admin@pbig.nl',password:'admin123',role:'admin',partnerName:'PBIG'}],leads:{'partner-plainwater':[{id:'lead-1',fullName:'Sanne de Wit',email:'sanne@contoso.nl',company:'Contoso',phone:'+31 6 12345678',status:'Nieuw',notes:'Interesse in Fabric governance.',scannedAt:'2026-03-07T10:12:00',source:'QR vCard'}],'partner-insumma':[]}};
+const STATUSES=['Nieuw','Opvolgen','Contact gehad','Gekwalificeerd','Niet relevant'];
+let state=loadState(),session=null,stream=null,detector=null,timer=null;
+function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);return raw?JSON.parse(raw):JSON.parse(JSON.stringify(DEMO_STATE));}catch{return JSON.parse(JSON.stringify(DEMO_STATE));}}
+function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+function resetDemo(){state=JSON.parse(JSON.stringify(DEMO_STATE));saveState();render();}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmtDate(v){if(!v) return '-'; try{return new Date(v).toLocaleString('nl-NL');}catch{return v;}}
+function parseVCard(text){const lines=text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);const pick=(prefixes)=>{const arr=Array.isArray(prefixes)?prefixes:[prefixes];const line=lines.find(l=>arr.some(p=>l.toUpperCase().startsWith(p.toUpperCase())));if(!line)return '';const i=line.indexOf(':');return i>=0?line.slice(i+1).trim():'';};return{fullName:(pick(['FN:','N:'])||'Onbekende bezoeker').replace(/;/g,' ').replace(/\s+/g,' ').trim(),email:pick(['EMAIL:','EMAIL;TYPE=INTERNET:','EMAIL;TYPE=WORK:']),company:pick('ORG:'),phone:pick(['TEL:','TEL;TYPE=CELL:','TEL;TYPE=WORK:'])};}
+function currentAccount(){if(!session)return null;return state.accounts.find(a=>a.id===session.accountId)||null;}
+function currentLeads(){const acc=currentAccount();if(!acc||acc.role!=='partner')return[];return state.leads[acc.id]||[];}
+function flash(text,isError=false,isOk=false){const el=document.getElementById('flash');if(!el)return;el.className=isError?'msg error':(isOk?'msg ok':'msg');el.textContent=text;el.classList.remove('hidden');}
+function clearFlash(){const el=document.getElementById('flash');if(el)el.classList.add('hidden');}
+function addLeadFromText(text,source){const acc=currentAccount();if(!acc||acc.role!=='partner')return flash('Niet toegestaan.',true);if(!String(text).toUpperCase().includes('BEGIN:VCARD'))return flash('Dit lijkt geen vCard te zijn.',true);const parsed=parseVCard(text);const lead={id:'lead-'+Date.now(),fullName:parsed.fullName||'Onbekende bezoeker',email:parsed.email||'',company:parsed.company||'',phone:parsed.phone||'',status:'Nieuw',notes:'',scannedAt:new Date().toISOString(),source:source||'QR vCard'};if(!state.leads[acc.id])state.leads[acc.id]=[];state.leads[acc.id].unshift(lead);saveState();render();flash('Lead opgeslagen voor '+lead.fullName,false,true);}
+function updateLead(id,patch){const acc=currentAccount();if(!acc||acc.role!=='partner')return;state.leads[acc.id]=(state.leads[acc.id]||[]).map(l=>l.id===id?({...l,...patch}):l);saveState();}
+function download(name,content,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function exportCsv(){const acc=currentAccount();if(!acc)return;const rows=currentLeads(),headers=['fullName','email','company','phone','status','notes','scannedAt','source'];const e=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const csv=[headers.join(','),...rows.map(r=>headers.map(h=>e(r[h])).join(','))].join('\n');download((acc.partnerName||'partner').toLowerCase().replace(/\s+/g,'-')+'-leads.csv',csv,'text/csv;charset=utf-8');}
+function exportJson(){const acc=currentAccount();if(!acc)return;download((acc.partnerName||'partner').toLowerCase().replace(/\s+/g,'-')+'-leads.json',JSON.stringify(currentLeads(),null,2),'application/json');}
+function exportExcelLike(){const acc=currentAccount();if(!acc)return;const rows=currentLeads(),headers=['fullName','email','company','phone','status','notes','scannedAt','source'];const e=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const csv=[headers.join(','),...rows.map(r=>headers.map(h=>e(r[h])).join(','))].join('\n');download((acc.partnerName||'partner').toLowerCase().replace(/\s+/g,'-')+'-leads.xls',csv,'application/vnd.ms-excel');}
+async function startCamera(){clearFlash();const diag=document.getElementById('diag');if(diag){diag.innerHTML=[['Secure context',window.isSecureContext?'ja':'nee'],['Protocol',location.protocol||'(onbekend)'],['getUserMedia',!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)],['BarcodeDetector','BarcodeDetector' in window]].map(([k,v])=>'<div>'+k+': <strong>'+v+'</strong></div>').join('');}if(!window.isSecureContext)return flash('Camera werkt alleen via HTTPS of localhost.',true);if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia))return flash('Deze browser ondersteunt geen cameratoegang.',true);try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});const video=document.getElementById('video');video.srcObject=stream;await video.play();if('BarcodeDetector' in window){detector=new BarcodeDetector({formats:['qr_code']});timer=setInterval(async()=>{try{const codes=await detector.detect(video);if(codes&&codes.length){const value=codes[0].rawValue||'';if(value.toUpperCase().includes('BEGIN:VCARD')){addLeadFromText(value,'Camera QR-scan');stopCamera();}else{flash('QR gevonden, maar inhoud is geen vCard.',true);}}}catch(e){}},800);flash('Camera gestart. Richt op de QR-code op de badge.');}else{flash('Camera gestart, maar BarcodeDetector ontbreekt in deze browser. Gebruik demo-vCard of voeg in productie een QR-library toe.',true);}}catch(err){flash('Camera kon niet starten: '+(err&&err.message?err.message:'onbekende fout'),true);}}
+function stopCamera(){if(timer){clearInterval(timer);timer=null;}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}const video=document.getElementById('video');if(video)video.srcObject=null;}
+function logout(){stopCamera();session=null;render();}
+function login(email,password){const account=state.accounts.find(a=>a.email.toLowerCase()===String(email).trim().toLowerCase()&&a.password===password);if(!account)return flash('Onjuiste inloggegevens.',true);session={accountId:account.id,loggedInAt:new Date().toISOString()};render();}
+function createPartner(){const partnerName=(document.getElementById('newPartnerName').value||'').trim();const email=(document.getElementById('newPartnerEmail').value||'').trim().toLowerCase();const password=document.getElementById('newPartnerPassword').value||'';if(!partnerName||!email||!password)return flash('Vul partnernaam, e-mail en wachtwoord in.',true);if(state.accounts.some(a=>a.email.toLowerCase()===email))return flash('Er bestaat al een account met dit e-mailadres.',true);let idBase='partner-'+partnerName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');if(!idBase||idBase==='partner-')idBase='partner-'+Date.now();let uniqueId=idBase;if(state.accounts.some(a=>a.id===uniqueId))uniqueId+='-'+Date.now();state.accounts.push({id:uniqueId,email,password,role:'partner',partnerName});state.leads[uniqueId]=[];saveState();render();flash('Partneraccount aangemaakt voor '+partnerName+'.',false,true);}
+function adminStats(){return state.accounts.filter(a=>a.role==='partner').map(a=>({partnerName:a.partnerName,email:a.email,count:(state.leads[a.id]||[]).length}));}
+function switchTab(tab,btn){document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));btn.classList.add('active');document.getElementById('tab-scanner').classList.toggle('hidden',tab!=='scanner');document.getElementById('tab-leads').classList.toggle('hidden',tab!=='leads');document.getElementById('tab-account').classList.toggle('hidden',tab!=='account');}
+function changeLeadStatus(id,value){updateLead(id,{status:value});}
+function changeLeadField(id,field,value){const patch={};patch[field]=value;updateLead(id,patch);}
+function loginView(){return '<div class="card"><div class="pill">PBIG 2027 partner tool</div><h1>Scan badges, bewaar leads veilig en exporteer direct.</h1><p class="muted">Mobiele webapp in PBIG-stijl voor partners. Elke partner ziet alleen de eigen scans. Beheer ziet alleen aantallen per partner.</p></div><div class="grid two"><div class="card"><h2>Inloggen</h2><div id="flash" class="msg hidden"></div><div style="margin-top:12px"><label>E-mailadres</label><input id="loginEmail" value="partner@plainwater.nl" /></div><div style="margin-top:12px"><label>Wachtwoord</label><input id="loginPassword" type="password" value="demo123" /></div><div class="row" style="margin-top:12px"><button class="btn" onclick="login(document.getElementById(\'loginEmail\').value, document.getElementById(\'loginPassword\').value)">Inloggen</button></div></div><div class="card"><h2>Demo-accounts</h2><div class="small"><p><strong>Partner</strong>: partner@plainwater.nl / demo123</p><p><strong>Admin</strong>: admin@pbig.nl / admin123</p><p style="margin-top:10px">Gebruik admin om nieuwe partneraccounts toe te voegen in deze deployable demo.</p></div></div></div>';}
+function adminView(){const stats=adminStats(),total=stats.reduce((s,r)=>s+r.count,0);return '<div class="card"><div class="between"><div><div class="pill">Beheer</div><h1>PBIG partner-overzicht</h1><p class="muted">Alleen aantallen zichtbaar. Leads blijven afgeschermd per partner.</p></div><div class="row"><button class="btn secondary" onclick="resetDemo()">Demo resetten</button><button class="btn secondary" onclick="logout()">Uitloggen</button></div></div></div><div class="stats three"><div class="stat"><div class="muted">Partners</div><div class="value">'+stats.length+'</div></div><div class="stat"><div class="muted">Totaal scans</div><div class="value">'+total+'</div></div><div class="stat"><div class="muted">Leadgegevens</div><div class="value" style="font-size:16px">Verborgen voor admin</div></div></div><div class="card"><div id="flash" class="msg hidden"></div><div class="grid two"><div><h2>Partner toevoegen</h2><p class="muted" style="margin-bottom:12px">Maak hier demo-accounts aan die direct kunnen inloggen.</p><div style="margin-top:12px"><label>Partnernaam</label><input id="newPartnerName" placeholder="Bijv. DataMinds" /></div><div style="margin-top:12px"><label>E-mail</label><input id="newPartnerEmail" placeholder="partner@dataminds.nl" /></div><div style="margin-top:12px"><label>Wachtwoord</label><input id="newPartnerPassword" type="password" placeholder="Kies een wachtwoord" /></div><div class="row" style="margin-top:12px"><button class="btn" onclick="createPartner()">Partner aanmaken</button></div><div class="small" style="margin-top:10px">Nieuwe accounts worden in deze demo lokaal op dit apparaat opgeslagen.</div></div><div><h2>Scans per partner</h2><p class="muted" style="margin-bottom:12px">Geschikt voor event-monitoring zonder privacy te schenden.</p><div class="list">'+stats.map(row=>'<div class="partner"><div class="between"><div><strong>'+esc(row.partnerName)+'</strong><div class="meta">'+esc(row.email)+'</div></div><span class="pill">'+row.count+' scans</span></div></div>').join('')+'</div></div></div></div>';}
+function partnerView(){const acc=currentAccount(),leads=currentLeads();return '<div class="card"><div class="between"><div><div class="pill">Partneromgeving</div><h1>'+esc(acc.partnerName)+'</h1><p class="muted">Gelijktijdig te gebruiken op meerdere telefoons of tablets met hetzelfde account. In deze demo wordt data lokaal opgeslagen.</p></div><div class="row"><button class="btn secondary" onclick="exportCsv()">CSV</button><button class="btn secondary" onclick="exportExcelLike()">Excel</button><button class="btn secondary" onclick="exportJson()">JSON</button><button class="btn secondary" onclick="logout()">Uitloggen</button></div></div></div><div class="stats three"><div class="stat"><div class="muted">Totaal leads</div><div class="value">'+leads.length+'</div></div><div class="stat"><div class="muted">Laatste scan</div><div class="value" style="font-size:16px">'+(leads[0]?esc(fmtDate(leads[0].scannedAt)):'Nog geen scans')+'</div></div><div class="stat"><div class="muted">Privacy</div><div class="value" style="font-size:16px">Alleen jouw partneraccount</div></div></div><div class="card"><div id="flash" class="msg hidden"></div><div class="tabs"><button class="tab active" onclick="switchTab(\'scanner\', this)">Scanner</button><button class="tab" onclick="switchTab(\'leads\', this)">Leads</button><button class="tab" onclick="switchTab(\'account\', this)">Account</button></div><div id="tab-scanner"><div class="grid two"><div><h2>QR-scanner</h2><p class="muted" style="margin-bottom:12px">Open de camera en scan een badge met vCard-QR.</p><video id="video" class="video" playsinline muted autoplay></video><div class="row" style="margin-top:12px"><button class="btn" onclick="startCamera()">Camera starten</button><button class="btn secondary" onclick="stopCamera()">Camera stoppen</button><button class="btn secondary" onclick="addLeadFromText(document.getElementById(\'manualVcard\').value, \'Demo vCard\')">Demo-vCard opslaan</button></div><div class="small" style="margin-top:10px">Diagnostiek:<div id="diag"></div></div></div><div><h2>Fallback / demo vCard</h2><p class="muted" style="margin-bottom:12px">Handig voor testen of als een device tijdelijk geen QR kan lezen.</p><textarea id="manualVcard">BEGIN:VCARD\nFN:Jaap van den Brandhof\nEMAIL:jaap@kimura.nl\nORG:Kimura\nTEL:+31612345678\nEND:VCARD</textarea></div></div></div><div id="tab-leads" class="hidden"><h2>Leadlijst</h2><p class="muted" style="margin-bottom:12px">Direct opgeslagen scans, later te verrijken.</p><div class="list">'+(leads.length?leads.map(lead=>'<div class="lead"><div class="between"><div><strong>'+esc(lead.fullName)+'</strong><div class="meta">'+esc(lead.company||'Geen bedrijf')+'</div></div><span class="pill">'+esc(lead.status)+'</span></div><div class="meta">'+esc(lead.email||'Geen e-mail')+(lead.phone?' · '+esc(lead.phone):'')+'</div><div class="meta">'+esc(fmtDate(lead.scannedAt))+' · '+esc(lead.source||'')+'</div><div class="grid two" style="margin-top:12px"><div><label>Status</label><select onchange="changeLeadStatus(\''+esc(lead.id)+'\', this.value)">'+STATUSES.map(s=>'<option value="'+esc(s)+'" '+(s===lead.status?'selected':'')+'>'+esc(s)+'</option>').join('')+'</select></div><div><label>Telefoonnummer</label><input value="'+esc(lead.phone||'')+'" oninput="changeLeadField(\''+esc(lead.id)+'\',\'phone\', this.value)" /></div></div><div class="grid two" style="margin-top:12px"><div><label>Naam</label><input value="'+esc(lead.fullName||'')+'" oninput="changeLeadField(\''+esc(lead.id)+'\',\'fullName\', this.value)" /></div><div><label>E-mail</label><input value="'+esc(lead.email||'')+'" oninput="changeLeadField(\''+esc(lead.id)+'\',\'email\', this.value)" /></div></div><div style="margin-top:12px"><label>Bedrijf</label><input value="'+esc(lead.company||'')+'" oninput="changeLeadField(\''+esc(lead.id)+'\',\'company\', this.value)" /></div><div style="margin-top:12px"><label>Notitie</label><textarea oninput="changeLeadField(\''+esc(lead.id)+'\',\'notes\', this.value)">'+esc(lead.notes||'')+'</textarea></div></div>').join(''):'<div class="lead"><div class="muted">Nog geen leads gevonden.</div></div>')+'</div></div><div id="tab-account" class="hidden"><h2>Account</h2><p class="muted">Partner: '+esc(acc.partnerName)+' · '+esc(acc.email)+'</p><div class="small" style="margin-top:10px">Deze demo gebruikt localStorage per apparaat. Voor productie voeg je centrale login, database en synchronisatie toe.</div></div></div>';}
+function render(){stopCamera();const app=document.getElementById('app');const acc=currentAccount();if(!acc)app.innerHTML=loginView();else if(acc.role==='admin')app.innerHTML=adminView();else app.innerHTML=partnerView();}
+window.startCamera=startCamera;window.stopCamera=stopCamera;window.login=login;window.logout=logout;window.exportCsv=exportCsv;window.exportJson=exportJson;window.exportExcelLike=exportExcelLike;window.addLeadFromText=addLeadFromText;window.switchTab=switchTab;window.changeLeadStatus=changeLeadStatus;window.changeLeadField=changeLeadField;window.createPartner=createPartner;window.resetDemo=resetDemo;
 render();
-</script>
-</body>
-</html>
+</script></body></html>
